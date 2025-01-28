@@ -1,6 +1,8 @@
 {
 	"name": "live-collaboration-editor-be",
+	"private": true,
 	"version": "1.0.0",
+	"type": "module",
 	"description": "express backend that handles the WS connections and DB interactions for the live-collaboration-editor-fe",
 	"author": "Filipe Freire",
 	"license": "MIT",
@@ -10,7 +12,6 @@
 		"sqlite"
 	],
 	"main": "index.ts",
-	"type": "module",
 	"scripts": {
 		"dev": "tsx --watch src/index.ts",
 		"start": "NODE_ENV=production node dist/index.js",
