@@ -1,5 +1,6 @@
 import { SQLite } from "@hocuspocus/extension-sqlite";
 import { Server } from "@hocuspocus/server";
+import "dotenv/config";
 import express from "express";
 import expressWs from "express-ws";
 
@@ -7,7 +8,7 @@ import expressWs from "express-ws";
 const server = Server.configure({
 	extensions: [
 		new SQLite({
-			database: "test.db",
+			database: process.env.NODE_ENV === "production" ? "prod.db" : "dev.db",
 			schema: `
         CREATE TABLE IF NOT EXISTS "documents" (
           "name" varchar(255) NOT NULL,
@@ -27,17 +28,11 @@ app.get("/", (req, res) => {
 
 // WebSocket Handlers
 app.ws("/live-collaboration", (ws, req) => {
-	const ctx = {
-		user: {
-			id: 1234,
-			name: "John Doe",
-		},
-	};
-
-	server.handleConnection(ws, req, ctx);
+	server.handleConnection(ws, req);
 });
 
+const PORT = process.env.NODE_ENV === "production" ? process.env.PORT : 1221;
 // Server start up
-app.listen(1234, () => {
-	console.log("Listening on ws://127.0.0.1:1234");
+app.listen(PORT, () => {
+	console.log(`Listening on http://127.0.0.1:${PORT}`);
 });
